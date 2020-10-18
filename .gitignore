@@ -1,0 +1,11 @@
+.vscode
+*pycache*
+*env*
+*sqlite3*
+*pycache*
+htmlcov/
+.coverage.*
+coverage.xml
+*.cover
+*.editorconfig*
+gcloud-service-key.json

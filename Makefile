@@ -34,7 +34,7 @@ clean:
 
 ## Start the prod environment
 prod:
-	docker-compose -f docker-compose.prod.yml up --build --force-recreate --remove-orphans --detach
+	docker-compose -f docker-compose.prod.yml up --build --force-recreate --remove-orphans 
 
 ifeq (test,$(firstword $(MAKECMDGOALS)))
   TAG_ARGS := $(word 2, $(MAKECMDGOALS))

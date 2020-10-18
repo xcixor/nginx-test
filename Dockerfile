@@ -1,6 +1,5 @@
 # pull base image
 FROM python:3.8.2
-RUN apt-get update && apt-get install -yyq netcat
 
 # set work directory
 WORKDIR /usr/src/app
@@ -17,9 +16,4 @@ RUN pip install --upgrade pip pipenv && pipenv install --system
 # copy project
 COPY ./app .
 
-COPY ./scripts/entrypoint.sh /usr/local/bin/
-
-RUN chmod u+x /usr/local/bin/entrypoint.sh
-
-# run entrypoint
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD python manage.py makemigrations; python manage.py migrate; python manage.py runserver 0.0.0.0:8000

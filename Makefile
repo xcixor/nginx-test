@@ -34,7 +34,15 @@ clean:
 
 ## Start the prod environment
 prod:
-	docker-compose -f docker-compose.prod.yml up --build --force-recreate --remove-orphans 
+	docker-compose -f docker-compose.prod.yml up --build --force-recreate --remove-orphans --detach
+
+## Run CI tests.
+ci-test:
+	docker-compose build
+	# docker-compose run instaswap coverage erase
+	docker-compose run instaswap coverage run --source='.' manage.py test
+	# docker-compose run instaswap coverage report --rcfile=.coveragerc
+	# docker-compose run instaswap coverage html --rcfile=.coveragerc
 
 ifeq (test,$(firstword $(MAKECMDGOALS)))
   TAG_ARGS := $(word 2, $(MAKECMDGOALS))

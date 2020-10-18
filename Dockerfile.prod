@@ -1,8 +1,12 @@
 # pull official base image
 FROM python:3.8.2
 
+# to suppress debian warnings
+ARG DEBIAN_FRONTEND=noninteractive
+
 # install netcat used in entry script
 RUN apt-get update && apt-get install -yyq netcat
+RUN apt-get update && apt-get -y install sudo
 
 # set work directory
 WORKDIR /usr/src/app
@@ -23,7 +27,8 @@ RUN pip install --upgrade pip pipenv && pipenv install --system
 RUN mkdir -p /home/app
 
 # create the app user
-RUN groupadd -g 1002 app && useradd -u 1001 -g app -s /bin/sh app
+# potential weakness delve on how to create root user
+RUN sudo groupadd -g 1002 app && sudo useradd -u 1001 -g app -s /bin/sh app
 
 # create the appropriate directories
 ENV HOME=/home/app

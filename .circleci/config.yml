@@ -31,7 +31,6 @@ jobs:
       - checkout
       - install_rok8s_scripts
       - run: prepare-gcloud
-      - setup_static_files_service_key
       - run:
           name: Build Tag and Push instaswap Docker Image
           command: |

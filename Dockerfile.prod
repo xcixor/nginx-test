@@ -1,12 +1,14 @@
 # pull official base image
 FROM python:3.8.2
-
 # to suppress debian warnings
 ARG DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get update -y && apt-get install -y nginx
+
+COPY ./nginx/nginx.conf /etc/nginx/conf.d
+
 # install netcat used in entry script
-RUN apt-get update && apt-get install -yyq netcat
-RUN apt-get update && apt-get -y install sudo
+# RUN apt-get update && apt-get install -yyq netcat
 
 # set work directory
 WORKDIR /usr/src/app
@@ -22,15 +24,10 @@ RUN pip install --upgrade pip pipenv && pipenv install --system
 # create directory for the app user
 RUN mkdir -p /home/app
 
-# create the app user
-# potential weakness delve on how to create root user
-RUN sudo groupadd -g 1002 app && sudo useradd -u 1001 -g app -s /bin/sh app
-
 # create the appropriate directories
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/instaswap
 RUN mkdir $APP_HOME
-RUN mkdir $APP_HOME/staticfiles
 WORKDIR $APP_HOME
 
 # copy entrypoint-prod.sh
@@ -41,11 +38,9 @@ RUN chmod u+x $APP_HOME/entrypoint.prod.sh
 # copy project
 COPY ./app $APP_HOME
 
-# chown all the files to the app user
-RUN chown -R app:app $APP_HOME
+ARG DJANGO_SETTINGS_MODULE
 
-# change to the app user
-USER app
+ARG SECRET_KEY
 
 # run entrypoint.prod.sh
 ENTRYPOINT ["/home/app/instaswap/entrypoint.prod.sh"]

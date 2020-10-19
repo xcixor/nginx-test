@@ -1,16 +1,6 @@
 version: '3.7'
 
 services:
-  nginx:
-    build: ./nginx
-    volumes:
-      - static_volume:/home/app/instaswap/staticfiles
-    ports:
-      - 1337:80
-    depends_on:
-      - instaswap
-    networks:
-      - instaswap_prod_network
   instaswap:
     build:
       context: .
@@ -18,17 +8,11 @@ services:
     container_name: instaswap_prod
     networks:
       - instaswap_prod_network
-    volumes:
-      - static_volume:/home/app/instaswap/staticfiles
-    expose:
-        - 8000
+    ports:
+      - "8000:8000"
     environment:
       DJANGO_SETTINGS_MODULE: instaswap.settings.production
       SECRET_KEY: 'secret-key'
-
-volumes:
-  static_volume:
-
 networks:
   instaswap_prod_network:
     name: instaswap_prod_network

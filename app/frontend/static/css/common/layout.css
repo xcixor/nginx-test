@@ -1,0 +1,16 @@
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.content {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex-shrink: 0;
+    background-color: #0288d1;
+    color: white;
+    width: 100%;
+}

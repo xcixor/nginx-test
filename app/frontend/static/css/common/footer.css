@@ -1,0 +1,25 @@
+.footer-contents {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-content {
+    flex-basis: 30%;
+}
+
+.products {
+    text-align: left;
+}
+
+.other {
+    text-align: center;
+}
+
+.company {
+    text-align: right;
+}
+
+.footer-content h4 {
+    text-transform: uppercase;
+}
+

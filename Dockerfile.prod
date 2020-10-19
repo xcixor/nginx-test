@@ -7,6 +7,8 @@ RUN apt-get update -y && apt-get install -y nginx
 
 COPY ./nginx/nginx.conf /etc/nginx/conf.d
 
+CMD service nginx start
+
 # install netcat used in entry script
 # RUN apt-get update && apt-get install -yyq netcat
 

@@ -55,7 +55,7 @@ jobs:
           image: 'gcr.io/${GOOGLE_PROJECT_ID}/instaswap:${CIRCLE_SHA1}'
           platform: managed
           region: us-east1
-          service-name: instaswap-<< parameters.environment >>
+          service-name: nginx-test-<< parameters.environment >>
           unauthenticated: true
           args: --service-account=<< parameters.service-account-name >>
 
@@ -63,10 +63,7 @@ workflows:
   version: 2
   instaswap:
     jobs:
-      - test_instaswap
       - push_service_image:
-          requires:
-            - test_instaswap
           filters:
             branches:
               only:
@@ -74,12 +71,3 @@ workflows:
       - deploy_service_cloud_run:
           requires:
             - push_service_image
-      - production_deploy_hold:
-          type: approval
-          requires:
-            - push_service_image
-      - deploy_service_cloud_run:
-          environment: production
-          service-account-name: production-deployment-containe@main-2020.iam.gserviceaccount.com
-          requires:
-            - production_deploy_hold

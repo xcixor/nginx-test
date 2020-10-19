@@ -13,10 +13,10 @@ commands:
             tar xz -C ${HOME}/rok8s-scripts && ls ${HOME}/rok8s-scripts
             echo 'export PATH=$PATH:${HOME}/rok8s-scripts/rok8s-scripts-11.1.3/bin' >> ${BASH_ENV}
 jobs:
-  test_instaswap:
+  test_nginx-test:
     machine:
       image: ubuntu-1604:201903-01
-    working_directory: ~/instaswap
+    working_directory: ~/nginx-test
     steps:
       - checkout
       - run:
@@ -26,13 +26,13 @@ jobs:
   push_service_image:
     machine:
       image: ubuntu-1604:201903-01
-    working_directory: ~/instaswap
+    working_directory: ~/nginx-test
     steps:
       - checkout
       - install_rok8s_scripts
       - run: prepare-gcloud
       - run:
-          name: Build Tag and Push instaswap Docker Image
+          name: Build Tag and Push nginx-test Docker Image
           command: |
             docker-build -f deploy/build.config
             docker-push -f deploy/build.config
@@ -52,7 +52,7 @@ jobs:
       - checkout
       - cloudrun/init
       - cloudrun/deploy:
-          image: 'gcr.io/${GOOGLE_PROJECT_ID}/instaswap:${CIRCLE_SHA1}'
+          image: 'gcr.io/${GOOGLE_PROJECT_ID}/nginx-test:${CIRCLE_SHA1}'
           platform: managed
           region: us-east1
           service-name: nginx-test-<< parameters.environment >>
@@ -61,7 +61,7 @@ jobs:
 
 workflows:
   version: 2
-  instaswap:
+  nginx-test:
     jobs:
       - push_service_image:
           filters:

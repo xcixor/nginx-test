@@ -44,5 +44,9 @@ ARG DJANGO_SETTINGS_MODULE
 
 ARG SECRET_KEY
 
+ENV PORT 8000
+
+EXPOSE 8000
+
 # run entrypoint.prod.sh
 ENTRYPOINT ["/home/app/instaswap/entrypoint.prod.sh"]

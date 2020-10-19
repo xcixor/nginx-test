@@ -48,5 +48,8 @@ ENV PORT 8000
 
 EXPOSE 8000
 
+ARG PORT
+
 # run entrypoint.prod.sh
+# CMD sh -c "envsubst '\$PORT' < /etc/nginx/conf.d > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 ENTRYPOINT ["/home/app/instaswap/entrypoint.prod.sh"]
